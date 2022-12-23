@@ -7,10 +7,9 @@ public class Member : AuditableEntity
 		UserId = string.Empty;
 		Username = string.Empty;
 		Email = string.Empty;
-		Articles = new List<Article>();
 	}
 	public string UserId { get; set; }
 	public string Username { get; set; }
 	public string Email { get; set; }
-	public ICollection<Article> Articles { get; set; }
+	public ICollection<Article>? Articles { get; set; }
 }
