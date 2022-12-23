@@ -7,7 +7,7 @@ public class UpdateCategoryCommandHandlerTest : CommandTestBase
 	private readonly UpdateCategoryCommandHandler _handler;
 	public UpdateCategoryCommandHandlerTest()
 	{
-		_handler = new(_db);
+		_handler = new(_db, _mapper);
 	}
 
 	[Fact]

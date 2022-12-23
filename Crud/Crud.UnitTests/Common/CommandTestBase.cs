@@ -16,7 +16,7 @@ public class CommandTestBase : IDisposable
 	protected CancellationToken _token { get; private set; }
 	public CommandTestBase()
 	{
-		//_db = CrudDbContextFactory.Create().Object;
+		_db = CrudDbContextFactory.Create().Object;
 		var configurationProvider = new MapperConfiguration(cfg =>
 		{
 			cfg.AddProfile<MappingProfile>();

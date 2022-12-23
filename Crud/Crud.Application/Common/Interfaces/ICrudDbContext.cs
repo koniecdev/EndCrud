@@ -8,4 +8,6 @@ public interface ICrudDbContext
 	DbSet<Category> Categories { get; set; }
 	DbSet<Picture> Pictures { get; set; }
 	DbSet<Article> Articles { get; set; }
+
+	Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

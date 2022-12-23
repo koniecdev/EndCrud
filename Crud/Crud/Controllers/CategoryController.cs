@@ -1,3 +1,4 @@
+using Crud.Shared.Categories.Commands;
 using Crud.Shared.Categories.Queries;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,5 +16,59 @@ public class CategoryController : BaseController
 			return BadRequest();
 		}
 		return Ok(response);
+	}
+	[HttpPost]
+	public async Task<ActionResult<int>> Category(CreateCategoryCommand command)
+	{
+		if (command is null)
+		{
+			return BadRequest();
+		}
+
+		if (string.IsNullOrWhiteSpace(command.Name))
+		{
+			return ValidationProblem();
+		}
+		var response = await Mediator.Send(command);
+		if (response == 0)
+		{
+			return BadRequest();
+		}
+		return Ok(response);
+	}
+	[HttpPatch]
+	public async Task<ActionResult> Category(UpdateCategoryCommand command)
+	{
+		if (command is null)
+		{
+			return BadRequest();
+		}
+		try
+		{
+			await Mediator.Send(command);
+		}
+		catch (Exception ex)
+		{
+			return BadRequest(ex);
+		}
+
+		return NoContent();
+	}
+	[HttpDelete("{id}")]
+	public async Task<ActionResult> Category(int id)
+	{
+		if (id > 0 && id < int.MaxValue)
+		{
+			try
+			{
+				await Mediator.Send(new DeleteCategoryCommand() { Id = id });
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex);
+			}
+			return NoContent();
+		}
+		return BadRequest("Invalid parameter range");
 	}
 }
