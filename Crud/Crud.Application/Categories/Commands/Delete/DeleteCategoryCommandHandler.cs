@@ -10,13 +10,16 @@ public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryComman
 	}
 	public async Task<Unit> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
 	{
-		var fromDb = await _db.Categories.SingleAsync(m=>m.Id == request.Id, cancellationToken);
-		if(fromDb == null)
+		var fromDb = await _db.Categories.SingleOrDefaultAsync(m=>m.Id == request.Id && m.StatusId != 0, cancellationToken);
+		if (fromDb != null)
 		{
-			throw new NotFoundException(request.Id.ToString(), new Exception());
+			_db.Categories.Remove(fromDb);
+			await _db.SaveChangesAsync(cancellationToken);
 		}
-		_db.Categories.Remove(fromDb);
-		await _db.SaveChangesAsync(cancellationToken);
+		else
+		{
+			throw new ArgumentException("id: " + request.Id.ToString());
+		}
 		return Unit.Value;
 	}
 }

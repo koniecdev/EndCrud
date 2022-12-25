@@ -12,10 +12,10 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
 	}
 	public async Task<Unit> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
 	{
-		var fromDb = await _db.Categories.SingleOrDefaultAsync(m => m.Id == request.Id, cancellationToken);
+		var fromDb = await _db.Categories.SingleOrDefaultAsync(m => m.Id == request.Id && m.StatusId != 0, cancellationToken);
 		if(fromDb == null)
 		{
-			throw new NotFoundException(request.Id.ToString(), new Exception());
+			throw new ArgumentException("id: " + request.Id.ToString());
 		}
 		_mapper.Map(request, fromDb);
 		await _db.SaveChangesAsync(cancellationToken);

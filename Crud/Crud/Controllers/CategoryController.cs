@@ -2,7 +2,7 @@ using Crud.Shared.Categories.Commands;
 using Crud.Shared.Categories.Queries;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Crud.Controllers;
+namespace Crud.API.Controllers;
 
 [Route("api/categories")]
 public class CategoryController : BaseController

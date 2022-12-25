@@ -2,7 +2,7 @@
 using IdentityModel;
 using System.Security.Claims;
 
-namespace Crud.Service;
+namespace Crud.API.Service;
 public class CurrentUserService : ICurrentUserService
 {
 	public string Id { get; set; } = "";

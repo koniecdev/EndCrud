@@ -12,7 +12,7 @@ public class GetAllCategoriesQueryHandler : IRequestHandler<GetAllCategoriesQuer
 	}
 	public async Task<GetAllCategoriesVm> Handle(GetAllCategoriesQuery query, CancellationToken cancellationToken)
 	{
-		var fromDb = await _db.Categories.ToListAsync(cancellationToken);
+		var fromDb = await _db.Categories.Where(m=>m.StatusId != 0).ToListAsync(cancellationToken);
 		GetAllCategoriesVm mapped = new() { Categories = _mapper.Map<List<GetAllCategoriesDto>>(fromDb) };
 		if(mapped == null)
 		{

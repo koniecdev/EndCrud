@@ -18,11 +18,11 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
 			throw new MappingException(nameof(CreateCategoryCommand), new Exception());
 		}
 		_db.Categories.Add(mapped);
+		await _db.SaveChangesAsync(cancellationToken);
 		if(mapped.Id == 0)
 		{
 			throw new DatabaseException("Category cant be added", new Exception());
 		}
-		await _db.SaveChangesAsync(cancellationToken);
 		return mapped.Id;
 	}
 }

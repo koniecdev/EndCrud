@@ -35,10 +35,8 @@ public static class CrudDbContextFactory
 		context.Members.Add(member2);
 
 		var category1 = new Category() { Id = 1, StatusId = 1, Name = "Uncategorized"};
-		//context.Categories.Add(category1);
 		context.Categories.Add(category1);
 		var category2 = new Category() { Id = 2, StatusId = 1, Name = "Sponsored" };
-		//context.Categories.Add(category2);
 		context.Categories.Add(category2);
 
 

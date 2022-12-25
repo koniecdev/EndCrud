@@ -1,8 +1,10 @@
-using Crud;
+using Crud.API;
+using Crud.Application;
 using Crud.Application.Common.Interfaces;
 using Crud.Infrastructure;
 using Crud.Persistance;
-using Crud.Service;
+using Crud.API.Service;
+using Crud.Shared;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -81,8 +83,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped(typeof(ICurrentUserService), typeof(CurrentUserService));
 
-//builder.Services.AddShared();
-//builder.Services.AddApplication();
+builder.Services.AddShared();
+builder.Services.AddApplication();
 builder.Services.AddInfrastructure(/*builder.Configuration*/);
 builder.Services.AddPersistance(builder.Configuration);
 
