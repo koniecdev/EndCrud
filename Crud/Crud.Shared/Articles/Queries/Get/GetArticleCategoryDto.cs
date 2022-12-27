@@ -5,7 +5,6 @@ public class GetArticleCategoryDto : IMapFrom<Category>
 	{
 		Name = string.Empty;
 	}
-	public int Id { get; set; }
 	public string Name { get; set; }
 	public void Mapping(Profile profile)
 	{

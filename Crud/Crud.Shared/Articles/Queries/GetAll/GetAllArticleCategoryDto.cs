@@ -5,11 +5,10 @@ public class GetAllArticleCategoryDto : IMapFrom<Category>
 	{
 		Name = string.Empty;
 	}
-	public int Id { get; set; }
 	public string Name { get; set; }
 	public void Mapping(Profile profile)
 	{
-		profile.CreateMap<Category, GetArticleCategoryDto>()
+		profile.CreateMap<Category, GetAllArticleCategoryDto>()
 			.ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 	}
 }

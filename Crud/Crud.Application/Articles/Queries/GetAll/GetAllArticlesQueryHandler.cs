@@ -12,7 +12,8 @@ public class GetAllArticlesQueryHandler : IRequestHandler<GetAllArticlesQuery, G
 	}
 	public async Task<GetAllArticlesVm> Handle(GetAllArticlesQuery query, CancellationToken cancellationToken)
 	{
-		var fromDb = await _db.Articles.Where(m => m.StatusId != 0).ToListAsync(cancellationToken);
+		var fromDb = await _db.Articles.Include(m=>m.Category).Include(m=>m.Member)
+			.Where(m => m.StatusId != 0).ToListAsync(cancellationToken);
 		GetAllArticlesVm mapped = new() { Articles = _mapper.Map<List<GetAllArticlesDto>>(fromDb) };
 		if (mapped == null)
 		{

@@ -9,9 +9,9 @@ public class GetAllArticlesDto : IMapFrom<Article>
 	public string Header { get; set; }
 	public string Content { get; set; }
 	public int MemberId { get; set; }
-	public virtual Member? Member { get; set; }
+	public virtual GetAllArticleMemberDto? Member { get; set; }
 	public int CategoryId { get; set; }
-	public virtual Category? Category { get; set; }
+	public virtual GetAllArticleCategoryDto? Category { get; set; }
 	public void Mapping(Profile profile)
 	{
 		profile.CreateMap<Article, GetAllArticlesDto>()

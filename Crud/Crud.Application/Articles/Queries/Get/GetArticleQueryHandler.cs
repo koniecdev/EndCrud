@@ -12,7 +12,8 @@ public class GetArticleQueryHandler : IRequestHandler<GetArticleQuery, GetArticl
 	}
 	public async Task<GetArticleVm> Handle(GetArticleQuery query, CancellationToken cancellationToken)
 	{
-		var fromDb = await _db.Articles.SingleOrDefaultAsync(m => m.Id == query.Id && m.StatusId != 0,
+		var fromDb = await _db.Articles.Include(m => m.Category).Include(m => m.Member)
+			.SingleOrDefaultAsync(m => m.Id == query.Id && m.StatusId != 0,
 			cancellationToken);
 		if(fromDb == null)
 		{

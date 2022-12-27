@@ -5,15 +5,13 @@ public class GetArticleVm : IMapFrom<Article>
 	{
 		Header = string.Empty;
 		Content = string.Empty;
-		Member = new();
-		Category = new();
 	}
 	public string Header { get; set; }
 	public string Content { get; set; }
 	public int MemberId { get; set; }
-	public GetArticleMemberDto Member { get; set; }
+	public virtual GetArticleMemberDto? Member { get; set; }
 	public int CategoryId { get; set; }
-	public GetArticleCategoryDto Category { get; set; }
+	public virtual GetArticleCategoryDto? Category { get; set; }
 	public void Mapping(Profile profile)
 	{
 		profile.CreateMap<Article, GetArticleVm>()

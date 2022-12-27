@@ -6,12 +6,11 @@ public class GetAllArticleMemberDto : IMapFrom<Member>
 		UserId = string.Empty;
 		Username = string.Empty;
 	}
-	public int Id { get; set; }
 	public string UserId { get; set; }
 	public string Username { get; set; }
 	public void Mapping(Profile profile)
 	{
-		profile.CreateMap<Member, GetArticleMemberDto>()
+		profile.CreateMap<Member, GetAllArticleMemberDto>()
 			.ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 	}
 }
