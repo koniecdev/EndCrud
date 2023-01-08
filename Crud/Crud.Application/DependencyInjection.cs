@@ -1,5 +1,7 @@
 ﻿using Crud.Application.Common.Behaviours;
 using MediatR.Pipeline;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 

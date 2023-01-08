@@ -8,6 +8,7 @@ using Crud.Shared;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using Microsoft.Extensions.FileProviders;
 
 WebApplicationBuilder? builder = null;
 var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
@@ -35,8 +36,9 @@ builder.Services.AddCors(options =>
 {
 	options.AddPolicy("MyOrigins", policy =>
 	{
-		policy.WithOrigins("https://localhost:5001").AllowAnyMethod().AllowAnyHeader();
-		policy.WithOrigins("https://localhost:7137").AllowAnyMethod().AllowAnyHeader();
+		policy.AllowAnyOrigin();
+		//policy.WithOrigins("https://localhost:5001").AllowAnyMethod().AllowAnyHeader();
+		//policy.WithOrigins("https://localhost:7297").AllowAnyMethod().AllowAnyHeader();
 	});
 });
 builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options =>
@@ -83,6 +85,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped(typeof(ICurrentUserService), typeof(CurrentUserService));
 
+
 builder.Services.AddShared();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(/*builder.Configuration*/);
@@ -103,12 +106,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-//app.UseStaticFiles(new StaticFileOptions
-//{
-//	FileProvider = new PhysicalFileProvider(
-//		   Path.Combine(builder.Environment.ContentRootPath, "MyStaticFiles")),
-//	RequestPath = "/StaticFiles"
-//});
+app.UseStaticFiles(new StaticFileOptions
+{
+	FileProvider = new PhysicalFileProvider(
+		   Path.Combine(builder.Environment.ContentRootPath, "wwwroot")),
+	RequestPath = "/wwwroot"
+});
 app.UseSerilogRequestLogging();
 app.UseCors("MyOrigins");
 app.UseAuthentication();

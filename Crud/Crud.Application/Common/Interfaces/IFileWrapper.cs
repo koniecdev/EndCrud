@@ -1,5 +1,7 @@
-﻿namespace Crud.Application.Common.Interfaces;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Crud.Application.Common.Interfaces;
 public interface IFileWrapper
 {
-	void WriteAllBytes(string outputFile, byte[] content);
+	Task SaveFile(IFormFile formFile, Stream stream);
 }

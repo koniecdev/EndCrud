@@ -79,10 +79,10 @@ namespace Crud.Persistance.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PictureId")
+                    b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("ThumbnailId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -91,7 +91,7 @@ namespace Crud.Persistance.Migrations
 
                     b.HasIndex("MemberId");
 
-                    b.HasIndex("PictureId");
+                    b.HasIndex("ThumbnailId");
 
                     b.ToTable("Articles");
                 });
@@ -250,9 +250,9 @@ namespace Crud.Persistance.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Crud.Domain.Entities.Picture", "Picture")
-                        .WithMany("Thumbnails")
-                        .HasForeignKey("PictureId")
+                    b.HasOne("Crud.Domain.Entities.Picture", "Thumbnail")
+                        .WithMany("ThumbnailArticles")
+                        .HasForeignKey("ThumbnailId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -260,7 +260,7 @@ namespace Crud.Persistance.Migrations
 
                     b.Navigation("Member");
 
-                    b.Navigation("Picture");
+                    b.Navigation("Thumbnail");
                 });
 
             modelBuilder.Entity("Crud.Domain.Entities.Category", b =>
@@ -275,7 +275,7 @@ namespace Crud.Persistance.Migrations
 
             modelBuilder.Entity("Crud.Domain.Entities.Picture", b =>
                 {
-                    b.Navigation("Thumbnails");
+                    b.Navigation("ThumbnailArticles");
                 });
 #pragma warning restore 612, 618
         }

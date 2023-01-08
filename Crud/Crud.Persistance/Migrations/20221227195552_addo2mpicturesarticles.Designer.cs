@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Crud.Persistance.Migrations
 {
     [DbContext(typeof(CrudDbContext))]
-    [Migration("20221227150937_AddArticleToPictureRelations")]
-    partial class AddArticleToPictureRelations
+    [Migration("20221227195552_addo2mpicturesarticles")]
+    partial class addo2mpicturesarticles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -81,10 +81,10 @@ namespace Crud.Persistance.Migrations
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PictureId")
+                    b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("ThumbnailId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -93,7 +93,7 @@ namespace Crud.Persistance.Migrations
 
                     b.HasIndex("MemberId");
 
-                    b.HasIndex("PictureId");
+                    b.HasIndex("ThumbnailId");
 
                     b.ToTable("Articles");
                 });
@@ -252,9 +252,9 @@ namespace Crud.Persistance.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Crud.Domain.Entities.Picture", "Picture")
-                        .WithMany("Thumbnails")
-                        .HasForeignKey("PictureId")
+                    b.HasOne("Crud.Domain.Entities.Picture", "Thumbnail")
+                        .WithMany("ThumbnailArticles")
+                        .HasForeignKey("ThumbnailId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -262,7 +262,7 @@ namespace Crud.Persistance.Migrations
 
                     b.Navigation("Member");
 
-                    b.Navigation("Picture");
+                    b.Navigation("Thumbnail");
                 });
 
             modelBuilder.Entity("Crud.Domain.Entities.Category", b =>
@@ -277,7 +277,7 @@ namespace Crud.Persistance.Migrations
 
             modelBuilder.Entity("Crud.Domain.Entities.Picture", b =>
                 {
-                    b.Navigation("Thumbnails");
+                    b.Navigation("ThumbnailArticles");
                 });
 #pragma warning restore 612, 618
         }

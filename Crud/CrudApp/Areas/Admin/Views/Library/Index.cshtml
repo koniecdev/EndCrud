@@ -1,3 +1,9 @@
-﻿<h1>
-    ŚWIEEEĆ GWIAZDEEEECZKO MAŁA ŚWIEEEĆ
-</h1>
+﻿@model Crud.Shared.Pictures.Queries.GetAllPicturesVm
+
+@{
+    var preUrl = SD.APIUri;
+    foreach(var picture in Model.Pictures)
+    {
+        <img src="@(preUrl + picture.RelativePath.Replace("C:\\Users\\Ariteku\\source\\repos\\crud\\Crud\\Crud\\wwwroot", "").Replace(@"\\", "%2F").Replace(@"\", "%2F"))">
+    }
+}

@@ -12,6 +12,8 @@ public class GetArticleVm : IMapFrom<Article>
 	public virtual GetArticleMemberDto? Member { get; set; }
 	public int CategoryId { get; set; }
 	public virtual GetArticleCategoryDto? Category { get; set; }
+	public virtual GetArticlePictureDto? Thumbnail { get; set; }
+	public virtual GetArticlePicturesDto? Pictures { get; set; }
 	public void Mapping(Profile profile)
 	{
 		profile.CreateMap<Article, GetArticleVm>()

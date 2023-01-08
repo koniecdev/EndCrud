@@ -1,5 +1,6 @@
-﻿namespace Crud.Application.Common.Interfaces;
+﻿using Microsoft.AspNetCore.Http;
+namespace Crud.Application.Common.Interfaces;
 public interface IFileStore
 {
-	public string SafeWriteFile(byte[] content, string sourceFileName, string path);
+	Task<string> SafeWriteFile(IFormFile formFile, string path);
 }

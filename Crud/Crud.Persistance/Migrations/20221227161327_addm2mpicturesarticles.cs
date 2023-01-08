@@ -4,17 +4,10 @@
 
 namespace Crud.Persistance.Migrations
 {
-    public partial class AddArticleToPictureRelations : Migration
+    public partial class addm2mpicturesarticles : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "PictureId",
-                table: "Articles",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
             migrationBuilder.CreateTable(
                 name: "ArticlePicture",
                 columns: table => new
@@ -40,40 +33,15 @@ namespace Crud.Persistance.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Articles_PictureId",
-                table: "Articles",
-                column: "PictureId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ArticlePicture_PicturesId",
                 table: "ArticlePicture",
                 column: "PicturesId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Articles_Pictures_PictureId",
-                table: "Articles",
-                column: "PictureId",
-                principalTable: "Pictures",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Articles_Pictures_PictureId",
-                table: "Articles");
-
             migrationBuilder.DropTable(
                 name: "ArticlePicture");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Articles_PictureId",
-                table: "Articles");
-
-            migrationBuilder.DropColumn(
-                name: "PictureId",
-                table: "Articles");
         }
     }
 }

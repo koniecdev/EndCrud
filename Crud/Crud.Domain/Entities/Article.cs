@@ -13,7 +13,7 @@ public class Article : AuditableEntity
 	public virtual Member? Member { get; set; }
 	public int CategoryId { get; set; }
 	public virtual Category? Category { get; set; }
-	public int PictureId { get; set; }
-	public virtual Picture? Picture { get; set; }
+	public int ThumbnailId { get; set; }
+	public virtual Picture? Thumbnail { get; set; }
 	public virtual ICollection<Picture>? Pictures { get; set; }
 }

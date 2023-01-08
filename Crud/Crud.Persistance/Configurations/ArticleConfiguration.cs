@@ -10,8 +10,6 @@ public class ArticleConfiguration : IEntityTypeConfiguration<Article>
 		builder.Property(m => m.Content).HasMaxLength(20000).IsRequired();
 		builder.Property(m => m.CategoryId).IsRequired();
 		builder.Property(m => m.MemberId).IsRequired();
-		builder.HasOne(m => m.Picture).WithMany(m => m.Thumbnails)
-			.HasForeignKey(m => m.PictureId);
 		builder.HasMany(m => m.Pictures).WithMany(m => m.Articles);
 	}
 }

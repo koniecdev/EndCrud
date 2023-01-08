@@ -7,6 +7,6 @@ public class Picture : AuditableEntity
 		RelativePath = string.Empty;
 	}
 	public string RelativePath { get; set; }
-	public virtual ICollection<Article>? Thumbnails { get; set; }
+	public virtual ICollection<Article>? ThumbnailArticles { get; set; }
 	public virtual ICollection<Article>? Articles { get; set; }
 }
