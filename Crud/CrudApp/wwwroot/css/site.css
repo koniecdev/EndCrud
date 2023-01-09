@@ -16,3 +16,14 @@ html {
 body {
   margin-bottom: 60px;
 }
+img{
+    width: 100%;
+}
+.admin_image_grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 300px);
+    grid-gap: 1rem;
+}
+.admin_image_grid_tile{
+    display: grid;
+}

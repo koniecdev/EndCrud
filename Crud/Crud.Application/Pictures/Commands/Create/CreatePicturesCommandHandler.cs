@@ -50,7 +50,6 @@ public class CreatePicturesCommandHandler : IRequestHandler<CreatePicturesComman
 					}
 				}
 				_db.Pictures.Add(new Picture() { RelativePath = Path.Combine("Images", yearMonth, picname) });
-				//todo
 			}
 		}
 		await _db.SaveChangesAsync(cancellationToken);

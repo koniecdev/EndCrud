@@ -2,8 +2,13 @@
 
 @{
     var preUrl = SD.APIUri;
-    foreach(var picture in Model.Pictures)
-    {
-        <img src="@(preUrl + picture.RelativePath.Replace("C:\\Users\\Ariteku\\source\\repos\\crud\\Crud\\Crud\\wwwroot", "").Replace(@"\\", "%2F").Replace(@"\", "%2F"))">
-    }
+    <div class="admin_image_grid">
+        @foreach(var picture in Model.Pictures)
+        {
+            <div class="admin_image_grid_tile">
+                <img src="@(preUrl + picture.RelativePath.Replace("C:\\Users\\Ariteku\\source\\repos\\crud\\Crud\\Crud\\wwwroot", "").Replace(@"\\", "%2F").Replace(@"\", "%2F"))">
+                <a href="/Admin/Library/Delete/@picture.Id.ToString()">Delete this image</a>
+            </div>
+        }
+    </div>
 }

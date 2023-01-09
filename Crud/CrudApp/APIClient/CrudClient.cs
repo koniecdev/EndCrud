@@ -1,4 +1,8 @@
 ﻿global using Newtonsoft.Json;
+using Crud.Shared.Articles.Commands;
+using Crud.Shared.Articles.Queries;
+using Crud.Shared.Categories.Commands;
+using Crud.Shared.Categories.Queries;
 using Crud.Shared.Pictures.Commands;
 using Crud.Shared.Pictures.Queries;
 using Microsoft.AspNetCore.Authentication;
@@ -166,7 +170,7 @@ public partial class CrudClient : ICrudClient
 		}
 	}
 
-	public async Task CreatePictures(CreatePicturesCommand command)
+	public async Task CreatePictures(CreatePicturesCommand command, string accessToken)
 	{
 		var urlBuilder = new StringBuilder();
 		urlBuilder.Append(BaseUrl).Append("pictures");
@@ -179,6 +183,7 @@ public partial class CrudClient : ICrudClient
 				request.Method = new HttpMethod("POST");
 				var url = urlBuilder.ToString();
 				request.RequestUri = new Uri(url, UriKind.RelativeOrAbsolute);
+				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
 				MultipartFormDataContent form = new();
 				foreach (var file in command.Files)
@@ -208,5 +213,61 @@ public partial class CrudClient : ICrudClient
 		var urlBuilder = new StringBuilder();
 		urlBuilder.Append(BaseUrl).Append("pictures");
 		return await GetTask<GetAllPicturesVm>(urlBuilder, accessToken);
+	}
+
+	public async Task DeletePicture(int id, string accessToken)
+	{
+		await DeleteTask(id, "pictures", accessToken);
+	}
+
+	public async Task<GetAllCategoriesVm> GetAllCategories(string accessToken)
+	{
+		var urlBuilder = new StringBuilder();
+		urlBuilder.Append(BaseUrl).Append("categories");
+		return await GetTask<GetAllCategoriesVm>(urlBuilder, accessToken);
+	}
+
+	public async Task<int> CreateCategory(CreateCategoryCommand command, string accessToken)
+	{
+		return await CreateTask(command, "categories", accessToken);
+	}
+
+	public async Task UpdateCategory(UpdateCategoryCommand command, string accessToken)
+	{
+		await UpdateTask(command, "categories", accessToken);
+	}
+
+	public async Task DeleteCategory(int id, string accessToken)
+	{
+		await DeleteTask(id, "categories", accessToken);
+	}
+
+	public async Task<GetAllArticlesVm> GetAllArticles(string accessToken)
+	{
+		var urlBuilder = new StringBuilder();
+		urlBuilder.Append(BaseUrl).Append("articles");
+		return await GetTask<GetAllArticlesVm>(urlBuilder, accessToken);
+	}
+
+	public async Task<GetArticleVm> GetArticle(int id, string accessToken)
+	{
+		var urlBuilder = new StringBuilder();
+		urlBuilder.Append(BaseUrl).Append("articles").Append($"/{id.ToString()}");
+		return await GetTask<GetArticleVm>(urlBuilder, accessToken);
+	}
+
+	public async Task<int> CreateArticle(CreateArticleCommand command, string accessToken)
+	{
+		return await CreateTask(command, "articles", accessToken);
+	}
+
+	public async Task UpdateArticle(UpdateArticleCommand command, string accessToken)
+	{
+		await UpdateTask(command, "articles", accessToken);
+	}
+
+	public async Task DeleteArticle(int id, string accessToken)
+	{
+		await DeleteTask(id, "articles", accessToken);
 	}
 }

@@ -5,6 +5,7 @@ public class GetAllPicturesDto : IMapFrom<Picture>
 	{
 		RelativePath = string.Empty;
 	}
+	public int Id { get; set; }
 	public string RelativePath { get; set; }
 	public void Mapping(Profile profile)
 	{

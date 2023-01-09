@@ -1,0 +1,8 @@
+﻿@model Tuple<int, string>
+
+<h1>Remove picture from library</h1>
+<form enctype="multipart/form-data" method="post">
+    <input type="hidden" name="id" value="@Model.Item1">
+    <img src="@Model.Item2">
+    <input type="submit" value="Delete this picture">
+</form>
