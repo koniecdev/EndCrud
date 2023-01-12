@@ -13,10 +13,7 @@ public class DeleteCategoryCommandHandlerTest : CommandTestBase
 	[Fact]
 	public async Task DeleteCategory()
 	{
-		DeleteCategoryCommand command = new()
-		{
-			Id = 1
-		};
+		DeleteCategoryCommand command = new(1);
 		await _handler.Handle(command, _token);
 		var fromDb = await _db.Categories.FirstOrDefaultAsync(m => m.Id == command.Id && m.StatusId == 1);
 		fromDb.ShouldBeNull();

@@ -227,6 +227,13 @@ public partial class CrudClient : ICrudClient
 		return await GetTask<GetAllCategoriesVm>(urlBuilder, accessToken);
 	}
 
+	public async Task<GetCategoryVm> GetCategory(int id, string accessToken)
+	{
+		var urlBuilder = new StringBuilder();
+		urlBuilder.Append(BaseUrl).Append("categories").Append(string.Concat("/", id.ToString()));
+		return await GetTask<GetCategoryVm>(urlBuilder, accessToken);
+	}
+
 	public async Task<int> CreateCategory(CreateCategoryCommand command, string accessToken)
 	{
 		return await CreateTask(command, "categories", accessToken);

@@ -6,6 +6,7 @@ public class CreateArticleCommand : IMapFrom<Article>, IRequest<int>
 		Header = string.Empty;
 		Content = string.Empty;
 	}
+
 	public string Header { get; set; }
 	public string Content { get; set; }
 	public int MemberId { get; set; }

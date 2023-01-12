@@ -24,7 +24,7 @@ public class ArticleController : BaseController
 		{
 			return BadRequest();
 		}
-		var response = await Mediator.Send(new GetArticleQuery() { Id = id });
+		var response = await Mediator.Send(new GetArticleQuery(id));
 		if (response == null)
 		{
 			return NotFound();
@@ -76,7 +76,7 @@ public class ArticleController : BaseController
 		{
 			try
 			{
-				await Mediator.Send(new DeleteArticleCommand() { Id = id });
+				await Mediator.Send(new DeleteArticleCommand(id));
 			}
 			catch (Exception ex)
 			{

@@ -14,6 +14,7 @@ public interface ICrudClient
     Task DeletePicture(int id, string accessToken);
 
     Task<GetAllCategoriesVm> GetAllCategories(string accessToken);
+    Task<GetCategoryVm> GetCategory(int id, string accessToken);
     Task<int> CreateCategory(CreateCategoryCommand command, string accessToken);
     Task UpdateCategory(UpdateCategoryCommand command, string accessToken);
     Task DeleteCategory(int id, string accessToken);

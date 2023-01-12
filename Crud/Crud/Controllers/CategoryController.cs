@@ -11,9 +11,23 @@ public class CategoryController : BaseController
 	public async Task<ActionResult<GetAllCategoriesVm>> GetAll()
 	{
 		var response = await Mediator.Send(new GetAllCategoriesQuery());
-		if(response == null)
+		if (response == null)
 		{
 			return BadRequest();
+		}
+		return Ok(response);
+	}
+	[HttpGet("GetById/{id}")]
+	public async Task<ActionResult<GetCategoryVm>> Get(int id)
+	{
+		if (!(id > 0 && id < int.MaxValue))
+		{
+			return BadRequest();
+		}
+		var response = await Mediator.Send(new GetCategoryQuery(id));
+		if (response == null)
+		{
+			return NotFound();
 		}
 		return Ok(response);
 	}
@@ -61,7 +75,7 @@ public class CategoryController : BaseController
 		{
 			try
 			{
-				await Mediator.Send(new DeleteCategoryCommand() { Id = id });
+				await Mediator.Send(new DeleteCategoryCommand(id));
 			}
 			catch (Exception ex)
 			{

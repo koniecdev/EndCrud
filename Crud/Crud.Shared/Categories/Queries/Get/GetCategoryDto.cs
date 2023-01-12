@@ -1,7 +1,7 @@
 ﻿namespace Crud.Shared.Categories.Queries;
-public class GetAllCategoriesDto : IMapFrom<Category>
+public class GetCategoryDto : IMapFrom<Category>
 {
-	public GetAllCategoriesDto()
+	public GetCategoryDto()
 	{
 		Name = string.Empty;
 	}
@@ -9,7 +9,7 @@ public class GetAllCategoriesDto : IMapFrom<Category>
 	public string Name { get; set; }
 	public void Mapping(Profile profile)
 	{
-		profile.CreateMap<Category, GetAllCategoriesDto>()
+		profile.CreateMap<Category, GetCategoryDto>()
 			.ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 	}
 }
