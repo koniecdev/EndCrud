@@ -25,6 +25,7 @@ builder.Services.AddAuthentication(options =>
         options.ResponseType = "code";
         options.Scope.Add("api1");
         options.Scope.Add("profile");
+        options.Scope.Add("offline_access");
         options.GetClaimsFromUserInfoEndpoint = true;
         options.SaveTokens = true;
         options.ClaimActions.MapUniqueJsonKey("Id", "Id");

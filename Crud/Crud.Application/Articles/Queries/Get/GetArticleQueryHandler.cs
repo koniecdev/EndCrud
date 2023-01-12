@@ -19,11 +19,11 @@ public class GetArticleQueryHandler : IRequestHandler<GetArticleQuery, GetArticl
 		{
 			throw new NotFoundException(query.Id.ToString());
 		}
-		var mapped = _mapper.Map<GetArticleVm>(fromDb);
+		var mapped = _mapper.Map<GetArticleDto>(fromDb);
 		if (mapped == null)
 		{
 			throw new MappingException(nameof(GetArticleVm), new Exception());
 		}
-		return mapped;
+		return new() { Article = mapped };
 	}
 }

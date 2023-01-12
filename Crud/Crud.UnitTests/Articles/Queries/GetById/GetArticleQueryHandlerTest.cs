@@ -21,6 +21,6 @@ public class GetArticleQueryHandlerTest : QueryTestFixtures
 	{
 		var response = await _handler.Handle(new(1), _token);
 		var fromDb = await _db.Articles.SingleOrDefaultAsync(m => m.Id == 1, _token);
-		(response.Content.Equals(fromDb?.Content) && response.MemberId == fromDb.MemberId).ShouldBeTrue();
+		(response.Article.Content.Equals(fromDb?.Content) && response.Article.MemberId == fromDb.MemberId).ShouldBeTrue();
 	}
 }
