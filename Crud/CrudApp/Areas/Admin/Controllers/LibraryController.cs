@@ -20,7 +20,7 @@ public class LibraryController : Controller
 	public async Task<ActionResult<GetAllPicturesVm>> Index()
 	{
 		var accessToken = await HttpContext.GetTokenAsync("access_token");
-		if(accessToken == null || string.IsNullOrWhiteSpace(accessToken))
+		if (accessToken == null || string.IsNullOrWhiteSpace(accessToken))
 		{
 			return Unauthorized();
 		}
