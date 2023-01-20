@@ -17,7 +17,8 @@ public class CategoryController : BaseController
 		}
 		return Ok(response);
 	}
-	[HttpGet("GetById/{id}")]
+	[HttpGet("{id}")]
+	[ActionName("Category")]
 	public async Task<ActionResult<GetCategoryVm>> Get(int id)
 	{
 		if (!(id > 0 && id < int.MaxValue))

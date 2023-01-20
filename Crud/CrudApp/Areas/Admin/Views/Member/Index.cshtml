@@ -1,3 +1,6 @@
-﻿<h1>
-    ŚWIEEEĆ GWIAZDEEEECZKO MAŁA ŚWIEEEĆ
-</h1>
+﻿@model Crud.Shared.Members.Queries.GetAllMembersVm
+
+@{
+    AdminHeaderModel headerModel = new("Members", new());
+}
+<partial name="_AdminHeaderPartial" model="@headerModel">

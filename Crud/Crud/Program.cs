@@ -36,9 +36,8 @@ builder.Services.AddCors(options =>
 {
 	options.AddPolicy("MyOrigins", policy =>
 	{
-		policy.AllowAnyOrigin();
-		//policy.WithOrigins("https://localhost:5001").AllowAnyMethod().AllowAnyHeader();
-		//policy.WithOrigins("https://localhost:7297").AllowAnyMethod().AllowAnyHeader();
+		policy.WithOrigins("https://localhost:5001").AllowAnyMethod().AllowAnyHeader();
+		policy.WithOrigins("https://localhost:7297").AllowAnyMethod().AllowAnyHeader();
 	});
 });
 builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options =>

@@ -1,0 +1,17 @@
+@model AdminLibraryModel
+
+@{
+    string className = string.Empty;
+    switch (Model.ChosenType)
+    {
+        case 0:
+            className = "thumbnailLibrary";
+            break;
+        case 1:
+            className = "galleryLibrary";
+            break;
+    }
+}
+<div class="@className">
+    
+</div>

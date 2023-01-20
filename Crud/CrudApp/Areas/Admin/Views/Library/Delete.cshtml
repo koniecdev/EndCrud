@@ -1,6 +1,10 @@
 ﻿@model Tuple<int, string>
+@{
+    AdminHeaderModel headerModel = new("Add pictures to Media Library", 
+    new(){new("/Admin/Library","Go back to Media Library")});
+}
+<partial name="_AdminHeaderPartial" model="@headerModel">
 
-<h1>Remove picture from library</h1>
 <form enctype="multipart/form-data" method="post">
     <input type="hidden" name="id" value="@Model.Item1">
     <img src="@Model.Item2">

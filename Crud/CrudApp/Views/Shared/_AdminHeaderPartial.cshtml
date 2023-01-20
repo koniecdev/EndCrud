@@ -1,0 +1,9 @@
+@model CrudApp.Models.AdminHeaderModel
+<header>
+    <h1>@Model.Title</h1>
+    <div>
+        @foreach(var item in Model.Buttons){
+            <a href="@item.Item1" class="_btn">@item.Item2</a>
+        }
+    </div>
+</header>

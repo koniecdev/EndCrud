@@ -1,5 +1,10 @@
 ﻿@model Crud.Shared.Pictures.Queries.GetAllPicturesVm
+@using CrudApp.Models;
 
+@{
+    AdminHeaderModel headerModel = new("Media Library", new(){new("/Admin/Library/Create","Add new picture")});
+}
+<partial name="_AdminHeaderPartial" model="@headerModel">
 @{
     var preUrl = SD.APIUri;
     <div class="admin_image_grid">

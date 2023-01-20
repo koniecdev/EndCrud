@@ -1,6 +1,9 @@
 ﻿@model Crud.Shared.Pictures.Commands.CreatePicturesCommand
-
-<h1>Add pictures to library</h1>
+@{
+    AdminHeaderModel headerModel = new("Add pictures to Media Library", 
+    new(){new("/Admin/Library","Go back to Media Library")});
+}
+<partial name="_AdminHeaderPartial" model="@headerModel">
 <form enctype="multipart/form-data" method="post">
     <label>Pictures to uploads</label>
     <input type="file" name="filenames" multiple>

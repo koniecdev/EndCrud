@@ -60,7 +60,7 @@ public class CategoryController : Controller
 			return Unauthorized();
 		}
 		var response = await _client.GetCategory(id, accessToken);
-		return View(model: response.Category);
+		return View(model: response);
 	}
 
 	[HttpPost, ActionName("Update")]

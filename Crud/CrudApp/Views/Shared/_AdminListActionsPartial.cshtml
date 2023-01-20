@@ -1,0 +1,6 @@
+@model Tuple<int, string>
+
+<div class="admin_list_actions">
+    <a href="@(Model.Item2)/Update/@Model.Item1">Update</a>
+    <a href="@(Model.Item2)/Delete/@Model.Item1">Delete</a>
+</div>

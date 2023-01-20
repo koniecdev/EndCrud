@@ -1,3 +1,6 @@
-﻿<h1>
-    ŚWIEEEĆ GWIAZDEEEECZKO MAŁA ŚWIEEEĆ
-</h1>
+﻿@model Crud.Shared.Articles.Queries.GetAllArticlesVm
+
+@{
+    AdminHeaderModel headerModel = new("Articles", new(){new("/Admin/Article/Create",SD.CreateNew + "Article")});
+}
+<partial name="_AdminHeaderPartial" model="@headerModel">

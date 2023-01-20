@@ -31,6 +31,16 @@ public class ArticleController : BaseController
 		}
 		return Ok(response);
 	}
+	[HttpGet("categories")]
+	public async Task<ActionResult<GetAllArticlesVm>> GetCategories()
+	{
+		var response = await Mediator.Send(new GetCategoriesQuery());
+		if (response == null)
+		{
+			return NotFound();
+		}
+		return Ok(response);
+	}
 	[HttpPost]
 	public async Task<ActionResult<int>> Article(CreateArticleCommand command)
 	{
@@ -40,7 +50,7 @@ public class ArticleController : BaseController
 		}
 
 		if (string.IsNullOrWhiteSpace(command.Header) || string.IsNullOrWhiteSpace(command.Content)
-			|| command.CategoryId == 0 || command.MemberId == 0)
+			|| command.CategoryId == 0 || string.IsNullOrWhiteSpace(command.UserId))
 		{
 			return ValidationProblem();
 		}

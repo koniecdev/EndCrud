@@ -1,3 +1,10 @@
-﻿<h1>
-    ŚWIEEEĆ GWIAZDEEEECZKO MAŁA ŚWIEEEĆ
-</h1>
+﻿@model Crud.Shared.Articles.Queries.GetArticleVm
+
+@{
+    AdminHeaderModel headerModel = new("Articles", new(){new("/Admin/Article",SD.GoBackTo + "Articles")});
+}
+<partial name="_AdminHeaderPartial" model="@headerModel">
+@Html.TextAreaFor(m => m.Article.Content)
+@section Scripts{
+    <script src="~/js/tinymce.js"></script>
+}

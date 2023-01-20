@@ -1,3 +1,19 @@
-﻿<h1>
-    ŚWIEEEĆ GWIAZDEEEECZKO MAŁA ŚWIEEEĆ
-</h1>
+﻿@model Crud.Shared.Categories.Queries.GetAllCategoriesVm
+
+@{
+    AdminHeaderModel headerModel = new("Categories", new(){new("/Admin/Category/Create",SD.CreateNew + "Category")});
+}
+<partial name="_AdminHeaderPartial" model="@headerModel">
+<div class="admin_list">
+    <div class="admin_list_header">
+        <a href="#">Name</a>
+    </div>
+    @{
+        foreach(var item in Model.Categories){
+            <div class="admin_list_tile">
+                <div class="admin_list_item">@item.Name</div>
+                <partial name="_AdminListActionsPartial" model='@(new Tuple<int,string>(item.Id,"Category"))'/>
+            </div>
+        }
+    }
+</div>

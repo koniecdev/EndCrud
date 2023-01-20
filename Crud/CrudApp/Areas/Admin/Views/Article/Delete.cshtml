@@ -1,3 +1,6 @@
-﻿<h1>
-    ŚWIEEEĆ GWIAZDEEEECZKO MAŁA ŚWIEEEĆ
-</h1>
+﻿@model Crud.Shared.Articles.Queries.GetArticleVm
+
+@{
+    AdminHeaderModel headerModel = new("Delete existing article", new(){new("/Admin/Article",SD.GoBackTo + "Articles")});
+}
+<partial name="_AdminHeaderPartial" model="@headerModel">

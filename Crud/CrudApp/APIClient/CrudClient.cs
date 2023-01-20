@@ -3,6 +3,7 @@ using Crud.Shared.Articles.Commands;
 using Crud.Shared.Articles.Queries;
 using Crud.Shared.Categories.Commands;
 using Crud.Shared.Categories.Queries;
+using Crud.Shared.Members.Queries;
 using Crud.Shared.Pictures.Commands;
 using Crud.Shared.Pictures.Queries;
 using Microsoft.AspNetCore.Authentication;
@@ -255,7 +256,12 @@ public partial class CrudClient : ICrudClient
 		urlBuilder.Append(BaseUrl).Append("articles");
 		return await GetTask<GetAllArticlesVm>(urlBuilder, accessToken);
 	}
-
+	public async Task<GetCategoriesVm> GetArticleCategories(string accessToken)
+	{
+		var urlBuilder = new StringBuilder();
+		urlBuilder.Append(BaseUrl).Append("articles/categories");
+		return await GetTask<GetCategoriesVm>(urlBuilder, accessToken);
+	}
 	public async Task<GetArticleVm> GetArticle(int id, string accessToken)
 	{
 		var urlBuilder = new StringBuilder();
@@ -277,4 +283,13 @@ public partial class CrudClient : ICrudClient
 	{
 		await DeleteTask(id, "articles", accessToken);
 	}
+
+	public async Task<GetAllMembersVm> GetAllMembers(string accessToken)
+	{
+		var urlBuilder = new StringBuilder();
+		urlBuilder.Append(BaseUrl).Append("members");
+		return await GetTask<GetAllMembersVm>(urlBuilder, accessToken);
+	}
+
+	
 }

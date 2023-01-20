@@ -1,3 +1,5 @@
+global using CrudApp.Extensions;
+using Crud.Shared;
 using CrudApp;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -17,7 +19,7 @@ builder.Services.AddAuthentication(options =>
 })
     .AddCookie("Cookies", options =>
 	{
-        options.ExpireTimeSpan = TimeSpan.FromDays(14);
+        options.ExpireTimeSpan = TimeSpan.FromDays(1);
 	})
     .AddOpenIdConnect("oidc", options =>
     {
@@ -45,6 +47,8 @@ builder.Services.AddHttpClient("CrudClient", options =>
 
 builder.Services.AddScoped(typeof(ICurrentUserService), typeof(CurrentUserService));
 builder.Services.AddScoped(typeof(ICrudClient), typeof(CrudClient));
+
+builder.Services.AddShared();
 
 var app = builder.Build();
 
