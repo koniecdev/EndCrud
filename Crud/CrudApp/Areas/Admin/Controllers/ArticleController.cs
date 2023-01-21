@@ -24,16 +24,7 @@ public class ArticleController : Controller
 
 	public async Task<ActionResult<GetAllArticlesVm>> Index()
 	{
-		var accessToken = await HttpContext.GetTokenAsync("access_token");
-
-		if (accessToken == null || string.IsNullOrWhiteSpace(accessToken))
-		{
-			var refreshToken = await HttpContext.GetTokenAsync("refresh_token");
-			await _client.RefreshToken(refreshToken);
-			accessToken = await HttpContext.GetTokenAsync("access_token");
-		}
-
-		var response = await _client.GetAllArticles(accessToken);
+		var response = await _client.GetAllArticles();
 		return View(model: response);
 	} 
 

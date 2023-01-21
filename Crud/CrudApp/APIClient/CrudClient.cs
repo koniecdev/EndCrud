@@ -6,6 +6,7 @@ using Crud.Shared.Categories.Queries;
 using Crud.Shared.Members.Queries;
 using Crud.Shared.Pictures.Commands;
 using Crud.Shared.Pictures.Queries;
+using CrudApp.APIClient;
 using IdentityModel;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
@@ -20,19 +21,17 @@ namespace CrudApp;
 public partial class CrudClient : ICrudClient
 {
 	private string _baseUrl = "https://localhost:7137";
-	private string _IS4baseUrl = "https://localhost:7137";
 	private readonly HttpClient _httpClient;
-	private readonly HttpClient _IS4httpClient;
 	private readonly HttpContext context;
 	private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
 	private readonly ICurrentUserService _currentUserService;
+	private readonly ITokenAuthorization _tokenService;
+	private readonly string AccessToken;
 
-	public CrudClient(IHttpClientFactory factory, ICurrentUserService currentUserService, IHttpContextAccessor accessor)
+	public CrudClient(IHttpClientFactory factory, ICurrentUserService currentUserService, IHttpContextAccessor accessor, ITokenAuthorization tokenService)
 	{
 		_httpClient = factory.CreateClient("CrudClient");
-		_IS4httpClient = factory.CreateClient("IS4Client");
 		_baseUrl = _httpClient?.BaseAddress?.ToString()+"api/";
-		_IS4baseUrl = _IS4httpClient?.BaseAddress?.ToString()+"";
 		_settings = new Lazy<Newtonsoft.Json.JsonSerializerSettings>(() =>
 		{
 			var settings = new JsonSerializerSettings();
@@ -44,6 +43,7 @@ public partial class CrudClient : ICrudClient
 		{
 			context = accessor.HttpContext;
 		}
+		_tokenService = tokenService;
 	}
 
 	protected JsonSerializerSettings JsonSerializerSettings { get { return _settings.Value; } }
@@ -56,10 +56,39 @@ public partial class CrudClient : ICrudClient
 		set { _baseUrl = value; }
 	}
 
-	public string IS4BaseUrl
+	private async Task<T> GetTask<T>(StringBuilder urlBuilder)
 	{
-		get { return _IS4baseUrl; }
-		set { _IS4baseUrl = value; }
+		var client = _httpClient;
+		try
+		{
+			using (var request = new HttpRequestMessage())
+			{
+				request.Method = new HttpMethod("GET");
+				var url = urlBuilder.ToString();
+				request.RequestUri = new Uri(url, UriKind.RelativeOrAbsolute);
+				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await _tokenService.GetToken());
+				var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None).ConfigureAwait(false);
+
+				if (response.StatusCode == System.Net.HttpStatusCode.OK)
+				{
+					var responseData = response.Content == null ? null : await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+					if (responseData != null)
+					{
+						T model = JsonConvert.DeserializeObject<T>(responseData);
+						return model;
+					}
+					throw new Exception("API returned error");
+				}
+				else
+				{
+					throw new Exception(response.StatusCode.ToString());
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			throw ex;
+		}
 	}
 
 	private async Task<T> GetTask<T>(StringBuilder urlBuilder, string accessToken)
@@ -228,69 +257,7 @@ public partial class CrudClient : ICrudClient
 		}
 	}
 
-	public async Task RefreshToken(string refreshToken)
-	{
-		var client = _IS4httpClient;
-		try
-		{
-			using (var request = new HttpRequestMessage())
-			{
-				request.Method = new HttpMethod("GET");
-				var urlBuilder = new StringBuilder();
-				urlBuilder.Append(IS4BaseUrl).Append("connect/token");
-				var url = urlBuilder.ToString();
-				//request.RequestUri = new Uri(url, UriKind.RelativeOrAbsolute);
-				//client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
-				var response = await client.RequestRefreshTokenAsync(new RefreshTokenRequest
-				{
-					Address = url,
-
-					ClientId = "mvc",
-					ClientSecret = "secret",
-
-					RefreshToken = refreshToken
-				});
-				var auth = await context.AuthenticateAsync("Cookies");
-				auth.Properties.StoreTokens(new List<AuthenticationToken>()
-				{
-					new AuthenticationToken()
-					{
-						Name = OpenIdConnectParameterNames.AccessToken,
-						Value = response.AccessToken
-					},
-					new AuthenticationToken()
-					{
-						Name = OpenIdConnectParameterNames.RefreshToken,
-						Value = response.RefreshToken
-					}
-				});
-
-				await context.SignInAsync(auth.Principal, auth.Properties);
-
-				//var response1 = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None).ConfigureAwait(false);
-
-				//if (response.StatusCode == System.Net.HttpStatusCode.OK)
-				//{
-				//	var responseData = response.Content == null ? null : await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-				//	if (responseData != null)
-				//	{
-				//		T model = JsonConvert.DeserializeObject<T>(responseData);
-				//		return model;
-				//	}
-				//	throw new Exception("API returned error");
-				//}
-				//else
-				//{
-				//	throw new Exception(response.StatusCode.ToString());
-				//}
-			}
-		}
-		catch (Exception ex)
-		{
-			throw ex;
-		}
-	}
+	
 
 	public async Task<GetAllPicturesVm> GetAllPictures(string accessToken)
 	{
@@ -333,11 +300,11 @@ public partial class CrudClient : ICrudClient
 		await DeleteTask(id, "categories", accessToken);
 	}
 
-	public async Task<GetAllArticlesVm> GetAllArticles(string accessToken)
+	public async Task<GetAllArticlesVm> GetAllArticles()
 	{
 		var urlBuilder = new StringBuilder();
 		urlBuilder.Append(BaseUrl).Append("articles");
-		return await GetTask<GetAllArticlesVm>(urlBuilder, accessToken);
+		return await GetTask<GetAllArticlesVm>(urlBuilder);
 	}
 	public async Task<GetCategoriesVm> GetArticleCategories(string accessToken)
 	{

@@ -10,7 +10,7 @@ namespace CrudApp;
 
 public interface ICrudClient
 {
-    Task RefreshToken(string refreshToken);
+    //Task RefreshToken(string refreshToken);
 
     Task<GetAllPicturesVm> GetAllPictures(string accessToken);
     Task CreatePictures(CreatePicturesCommand command, string accessToken);
@@ -22,7 +22,7 @@ public interface ICrudClient
     Task UpdateCategory(UpdateCategoryCommand command, string accessToken);
     Task DeleteCategory(int id, string accessToken);
 
-    Task<GetAllArticlesVm> GetAllArticles(string accessToken);
+    Task<GetAllArticlesVm> GetAllArticles();
     Task<GetArticleVm> GetArticle(int id, string accessToken);
     Task<GetCategoriesVm> GetArticleCategories(string accessToken);
     Task<int> CreateArticle(CreateArticleCommand command, string accessToken);

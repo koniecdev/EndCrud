@@ -1,6 +1,7 @@
 global using CrudApp.Extensions;
 using Crud.Shared;
 using CrudApp;
+using CrudApp.APIClient;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.IdentityModel.Tokens.Jwt;
@@ -52,6 +53,7 @@ builder.Services.AddHttpClient("IS4Client", options =>
 }).ConfigurePrimaryHttpMessageHandler(sp => new HttpClientHandler());
 
 builder.Services.AddScoped(typeof(ICurrentUserService), typeof(CurrentUserService));
+builder.Services.AddScoped(typeof(ITokenAuthorization), typeof(TokenAuthorization));
 builder.Services.AddScoped(typeof(ICrudClient), typeof(CrudClient));
 
 builder.Services.AddShared();
