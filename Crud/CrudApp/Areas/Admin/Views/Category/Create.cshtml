@@ -4,12 +4,13 @@
     AdminHeaderModel headerModel = new("Create new category", new(){new("/Admin/Category",SD.GoBackTo + "Categories")});
 }
 <partial name="_AdminHeaderPartial" model="@headerModel"/>
-
-<form method="post" class="iform">
-    <div class="form_left">
-        <input type="text" asp-for="@Model.Name">
-    </div>
-    <div class="form_right">
-        <input type="submit" value="Submit">
-    </div>
-</form>
+<main>
+    <form method="post" class="adminForm">
+        <div class="form_left">
+            <input type="text" required placeholder="Name" asp-for="@Model.Name">
+        </div>
+        <div class="form_right">
+            <input type="submit" class="_btn" value="Submit">
+        </div>
+    </form>
+</main>

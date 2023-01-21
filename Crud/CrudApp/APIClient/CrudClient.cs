@@ -91,42 +91,7 @@ public partial class CrudClient : ICrudClient
 		}
 	}
 
-	private async Task<T> GetTask<T>(StringBuilder urlBuilder, string accessToken)
-	{
-		var client = _httpClient;
-		try
-		{
-			using (var request = new HttpRequestMessage())
-			{
-				request.Method = new HttpMethod("GET");
-				var url = urlBuilder.ToString();
-				request.RequestUri = new Uri(url, UriKind.RelativeOrAbsolute);
-				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-				var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None).ConfigureAwait(false);
-
-				if (response.StatusCode == System.Net.HttpStatusCode.OK)
-				{
-					var responseData = response.Content == null ? null : await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-					if (responseData != null)
-					{
-						T model = JsonConvert.DeserializeObject<T>(responseData);
-						return model;
-					}
-					throw new Exception("API returned error");
-				}
-				else
-				{
-					throw new Exception(response.StatusCode.ToString());
-				}
-			}
-		}
-		catch (Exception ex)
-		{
-			throw ex;
-		}
-	}
-
-	private async Task<int> CreateTask<T>(T command, string pth, string accessToken)
+	private async Task<int> CreateTask<T>(T command, string pth)
 	{
 		var urlBuilder = new StringBuilder();
 		urlBuilder.Append(BaseUrl).Append(pth);
@@ -139,7 +104,7 @@ public partial class CrudClient : ICrudClient
 				var url = urlBuilder.ToString();
 				request.RequestUri = new Uri(url, UriKind.RelativeOrAbsolute);
 				request.Content = new StringContent(JsonConvert.SerializeObject(command), Encoding.UTF8, "application/json");
-				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await _tokenService.GetToken());
 				var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None).ConfigureAwait(false);
 
 				if (response.StatusCode == System.Net.HttpStatusCode.OK || response.StatusCode == System.Net.HttpStatusCode.Created)
@@ -164,7 +129,7 @@ public partial class CrudClient : ICrudClient
 		}
 	}
 
-	private async Task UpdateTask<T>(T command, string pth, string accessToken)
+	private async Task UpdateTask<T>(T command, string pth)
 	{
 		var urlBuilder = new StringBuilder();
 		urlBuilder.Append(BaseUrl).Append(pth);
@@ -177,7 +142,7 @@ public partial class CrudClient : ICrudClient
 				var url = urlBuilder.ToString();
 				request.RequestUri = new Uri(url, UriKind.RelativeOrAbsolute);
 				request.Content = new StringContent(JsonConvert.SerializeObject(command), Encoding.UTF8, "application/json");
-				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await _tokenService.GetToken());
 				var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None).ConfigureAwait(false);
 
 				if (response.StatusCode != System.Net.HttpStatusCode.NoContent)
@@ -192,7 +157,7 @@ public partial class CrudClient : ICrudClient
 		}
 	}
 
-	private async Task DeleteTask(int idToDelete, string pth, string accessToken)
+	private async Task DeleteTask(int idToDelete, string pth)
 	{
 		var urlBuilder = new StringBuilder();
 		urlBuilder.Append(BaseUrl).Append(pth).Append('/').Append(idToDelete);
@@ -204,7 +169,7 @@ public partial class CrudClient : ICrudClient
 				request.Method = new HttpMethod("DELETE");
 				var url = urlBuilder.ToString();
 				request.RequestUri = new Uri(url, UriKind.RelativeOrAbsolute);
-				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await _tokenService.GetToken());
 				var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None).ConfigureAwait(false);
 
 				if (response.StatusCode != System.Net.HttpStatusCode.NoContent)
@@ -219,7 +184,7 @@ public partial class CrudClient : ICrudClient
 		}
 	}
 
-	public async Task CreatePictures(CreatePicturesCommand command, string accessToken)
+	public async Task CreatePictures(CreatePicturesCommand command)
 	{
 		var urlBuilder = new StringBuilder();
 		urlBuilder.Append(BaseUrl).Append("pictures");
@@ -232,7 +197,7 @@ public partial class CrudClient : ICrudClient
 				request.Method = new HttpMethod("POST");
 				var url = urlBuilder.ToString();
 				request.RequestUri = new Uri(url, UriKind.RelativeOrAbsolute);
-				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await _tokenService.GetToken());
 
 				MultipartFormDataContent form = new();
 				foreach (var file in command.Files)
@@ -259,45 +224,45 @@ public partial class CrudClient : ICrudClient
 
 	
 
-	public async Task<GetAllPicturesVm> GetAllPictures(string accessToken)
+	public async Task<GetAllPicturesVm> GetAllPictures()
 	{
 		var urlBuilder = new StringBuilder();
 		urlBuilder.Append(BaseUrl).Append("pictures");
-		return await GetTask<GetAllPicturesVm>(urlBuilder, accessToken);
+		return await GetTask<GetAllPicturesVm>(urlBuilder);
 	}
 
-	public async Task DeletePicture(int id, string accessToken)
+	public async Task DeletePicture(int id)
 	{
-		await DeleteTask(id, "pictures", accessToken);
+		await DeleteTask(id, "pictures");
 	}
 
-	public async Task<GetAllCategoriesVm> GetAllCategories(string accessToken)
+	public async Task<GetAllCategoriesVm> GetAllCategories()
 	{
 		var urlBuilder = new StringBuilder();
 		urlBuilder.Append(BaseUrl).Append("categories");
-		return await GetTask<GetAllCategoriesVm>(urlBuilder, accessToken);
+		return await GetTask<GetAllCategoriesVm>(urlBuilder);
 	}
 
-	public async Task<GetCategoryVm> GetCategory(int id, string accessToken)
+	public async Task<GetCategoryVm> GetCategory(int id)
 	{
 		var urlBuilder = new StringBuilder();
 		urlBuilder.Append(BaseUrl).Append("categories").Append(string.Concat("/", id.ToString()));
-		return await GetTask<GetCategoryVm>(urlBuilder, accessToken);
+		return await GetTask<GetCategoryVm>(urlBuilder);
 	}
 
-	public async Task<int> CreateCategory(CreateCategoryCommand command, string accessToken)
+	public async Task<int> CreateCategory(CreateCategoryCommand command)
 	{
-		return await CreateTask(command, "categories", accessToken);
+		return await CreateTask(command, "categories");
 	}
 
-	public async Task UpdateCategory(UpdateCategoryCommand command, string accessToken)
+	public async Task UpdateCategory(UpdateCategoryCommand command)
 	{
-		await UpdateTask(command, "categories", accessToken);
+		await UpdateTask(command, "categories");
 	}
 
-	public async Task DeleteCategory(int id, string accessToken)
+	public async Task DeleteCategory(int id)
 	{
-		await DeleteTask(id, "categories", accessToken);
+		await DeleteTask(id, "categories");
 	}
 
 	public async Task<GetAllArticlesVm> GetAllArticles()
@@ -306,38 +271,40 @@ public partial class CrudClient : ICrudClient
 		urlBuilder.Append(BaseUrl).Append("articles");
 		return await GetTask<GetAllArticlesVm>(urlBuilder);
 	}
-	public async Task<GetCategoriesVm> GetArticleCategories(string accessToken)
+
+	public async Task<GetCategoriesVm> GetArticleCategories()
 	{
 		var urlBuilder = new StringBuilder();
 		urlBuilder.Append(BaseUrl).Append("articles/categories");
-		return await GetTask<GetCategoriesVm>(urlBuilder, accessToken);
+		return await GetTask<GetCategoriesVm>(urlBuilder);
 	}
-	public async Task<GetArticleVm> GetArticle(int id, string accessToken)
+
+	public async Task<GetArticleVm> GetArticle(int id)
 	{
 		var urlBuilder = new StringBuilder();
 		urlBuilder.Append(BaseUrl).Append("articles").Append($"/{id.ToString()}");
-		return await GetTask<GetArticleVm>(urlBuilder, accessToken);
+		return await GetTask<GetArticleVm>(urlBuilder);
 	}
 
-	public async Task<int> CreateArticle(CreateArticleCommand command, string accessToken)
+	public async Task<int> CreateArticle(CreateArticleCommand command)
 	{
-		return await CreateTask(command, "articles", accessToken);
+		return await CreateTask(command, "articles");
 	}
 
-	public async Task UpdateArticle(UpdateArticleCommand command, string accessToken)
+	public async Task UpdateArticle(UpdateArticleCommand command)
 	{
-		await UpdateTask(command, "articles", accessToken);
+		await UpdateTask(command, "articles");
 	}
 
-	public async Task DeleteArticle(int id, string accessToken)
+	public async Task DeleteArticle(int id)
 	{
-		await DeleteTask(id, "articles", accessToken);
+		await DeleteTask(id, "articles");
 	}
 
-	public async Task<GetAllMembersVm> GetAllMembers(string accessToken)
+	public async Task<GetAllMembersVm> GetAllMembers()
 	{
 		var urlBuilder = new StringBuilder();
 		urlBuilder.Append(BaseUrl).Append("members");
-		return await GetTask<GetAllMembersVm>(urlBuilder, accessToken);
+		return await GetTask<GetAllMembersVm>(urlBuilder);
 	}
 }

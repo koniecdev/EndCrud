@@ -10,25 +10,23 @@ namespace CrudApp;
 
 public interface ICrudClient
 {
-    //Task RefreshToken(string refreshToken);
+    Task<GetAllPicturesVm> GetAllPictures();
+    Task CreatePictures(CreatePicturesCommand command);
+    Task DeletePicture(int id);
 
-    Task<GetAllPicturesVm> GetAllPictures(string accessToken);
-    Task CreatePictures(CreatePicturesCommand command, string accessToken);
-    Task DeletePicture(int id, string accessToken);
-
-    Task<GetAllCategoriesVm> GetAllCategories(string accessToken);
-    Task<GetCategoryVm> GetCategory(int id, string accessToken);
-    Task<int> CreateCategory(CreateCategoryCommand command, string accessToken);
-    Task UpdateCategory(UpdateCategoryCommand command, string accessToken);
-    Task DeleteCategory(int id, string accessToken);
+    Task<GetAllCategoriesVm> GetAllCategories();
+    Task<GetCategoryVm> GetCategory(int id);
+    Task<int> CreateCategory(CreateCategoryCommand command);
+    Task UpdateCategory(UpdateCategoryCommand command);
+    Task DeleteCategory(int id);
 
     Task<GetAllArticlesVm> GetAllArticles();
-    Task<GetArticleVm> GetArticle(int id, string accessToken);
-    Task<GetCategoriesVm> GetArticleCategories(string accessToken);
-    Task<int> CreateArticle(CreateArticleCommand command, string accessToken);
-    Task UpdateArticle(UpdateArticleCommand command, string accessToken);
-    Task DeleteArticle(int id, string accessToken);
+    Task<GetArticleVm> GetArticle(int id);
+    Task<GetCategoriesVm> GetArticleCategories();
+    Task<int> CreateArticle(CreateArticleCommand command);
+    Task UpdateArticle(UpdateArticleCommand command);
+    Task DeleteArticle(int id);
 
-    Task<GetAllMembersVm> GetAllMembers(string accessToken);
+    Task<GetAllMembersVm> GetAllMembers();
 
 }

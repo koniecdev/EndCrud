@@ -19,13 +19,7 @@ public class LibraryController : Controller
 	}
 	public async Task<ActionResult<GetAllPicturesVm>> Index()
 	{
-		var accessToken = await HttpContext.GetTokenAsync("access_token");
-		if (accessToken == null || string.IsNullOrWhiteSpace(accessToken))
-		{
-			return Unauthorized();
-		}
-		return View(model: await _client.GetAllPictures(accessToken));
-
+		return View(model: await _client.GetAllPictures());
 	}
 
 	public IActionResult Create()
@@ -46,12 +40,7 @@ public class LibraryController : Controller
 		List<IFormFile> formFiles = Request.Form.Files.ToList();
 
 		command.Files = formFiles;
-		var accessToken = await HttpContext.GetTokenAsync("access_token");
-		if (accessToken == null || string.IsNullOrWhiteSpace(accessToken))
-		{
-			return Unauthorized();
-		}
-		await _client.CreatePictures(command, accessToken);
+		await _client.CreatePictures(command);
 		return RedirectToAction(nameof(Index));
 	}
 
@@ -65,12 +54,7 @@ public class LibraryController : Controller
 	[ValidateAntiForgeryToken]
 	public async Task<ActionResult> DeletePost(int id)
 	{
-		var accessToken = await HttpContext.GetTokenAsync("access_token");
-		if (accessToken == null || string.IsNullOrWhiteSpace(accessToken))
-		{
-			return Unauthorized();
-		}
-		await _client.DeletePicture(id, accessToken);
+		await _client.DeletePicture(id);
 		return RedirectToAction(nameof(Index));
 	}
 }

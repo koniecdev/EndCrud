@@ -11,7 +11,9 @@
     @{
         foreach(var item in Model.Categories){
             <div class="admin_list_tile">
-                <div class="admin_list_item">@item.Name</div>
+                <div class="admin_list_tile_properties">
+                    <div class="admin_list_item">@item.Name</div>
+                </div>
                 <partial name="_AdminListActionsPartial" model='@(new Tuple<int,string>(item.Id,"Category"))'/>
             </div>
         }

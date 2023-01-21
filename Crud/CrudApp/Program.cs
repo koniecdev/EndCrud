@@ -20,7 +20,7 @@ builder.Services.AddAuthentication(options =>
 })
     .AddCookie("Cookies", options =>
 	{
-        options.ExpireTimeSpan = TimeSpan.FromHours(1);
+        options.ExpireTimeSpan = TimeSpan.FromSeconds(2500000);
 	})
     .AddOpenIdConnect("oidc", options =>
     {

@@ -22,11 +22,7 @@ public class CategoryController : Controller
 
 	public async Task<ActionResult<GetAllCategoriesVm>> Index()
 	{
-		var accessToken = await HttpContext.GetTokenAsync("access_token");
-		if(accessToken == null || string.IsNullOrWhiteSpace(accessToken)){
-			return Unauthorized();
-		}
-		var response = await _client.GetAllCategories(accessToken);
+		var response = await _client.GetAllCategories();
 		return View(model: response);
 	}
 
@@ -39,12 +35,7 @@ public class CategoryController : Controller
 	[ValidateAntiForgeryToken]
 	public async Task<ActionResult> Create(CreateCategoryCommand command)
 	{
-		var accessToken = await HttpContext.GetTokenAsync("access_token");
-		if (accessToken == null || string.IsNullOrWhiteSpace(accessToken))
-		{
-			return Unauthorized();
-		}
-		int response = await _client.CreateCategory(command, accessToken);
+		int response = await _client.CreateCategory(command);
 		if(!(response > 0))
 		{
 			return BadRequest();
@@ -54,12 +45,7 @@ public class CategoryController : Controller
 
 	public async Task<ActionResult> Update(int id)
 	{
-		var accessToken = await HttpContext.GetTokenAsync("access_token");
-		if (accessToken == null || string.IsNullOrWhiteSpace(accessToken))
-		{
-			return Unauthorized();
-		}
-		var response = await _client.GetCategory(id, accessToken);
+		var response = await _client.GetCategory(id);
 		return View(model: response);
 	}
 
@@ -67,22 +53,12 @@ public class CategoryController : Controller
 	[ValidateAntiForgeryToken]
 	public async Task<ActionResult> Update(GetCategoryVm command)
 	{
-		var accessToken = await HttpContext.GetTokenAsync("access_token");
-		if (accessToken == null || string.IsNullOrWhiteSpace(accessToken))
-		{
-			return Unauthorized();
-		}
-		await _client.UpdateCategory(_mapper.Map<UpdateCategoryCommand>(command.Category), accessToken);
+		await _client.UpdateCategory(_mapper.Map<UpdateCategoryCommand>(command.Category));
 		return RedirectToAction(nameof(Index));
 	}
 	public async Task<ActionResult> Delete(int id)
 	{
-		var accessToken = await HttpContext.GetTokenAsync("access_token");
-		if (accessToken == null || string.IsNullOrWhiteSpace(accessToken))
-		{
-			return Unauthorized();
-		}
-		var response = await _client.GetCategory(id, accessToken);
+		var response = await _client.GetCategory(id);
 		return View(model: response);
 	}
 
@@ -90,12 +66,7 @@ public class CategoryController : Controller
 	[ValidateAntiForgeryToken]
 	public async Task<ActionResult> Delete(GetCategoryVm command)
 	{
-		var accessToken = await HttpContext.GetTokenAsync("access_token");
-		if (accessToken == null || string.IsNullOrWhiteSpace(accessToken))
-		{
-			return Unauthorized();
-		}
-		await _client.DeleteCategory(command.Category.Id, accessToken);
+		await _client.DeleteCategory(command.Category.Id);
 		return RedirectToAction(nameof(Index));
 	}
 }

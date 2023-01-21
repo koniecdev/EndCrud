@@ -1,6 +1,7 @@
 ﻿using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace CrudApp.APIClient;
@@ -24,13 +25,16 @@ public class TokenAuthorization : ITokenAuthorization
 	public async Task<string> GetToken()
 	{
 		var accessToken = await context.GetTokenAsync("access_token");
+		var tokenHandler = new JwtSecurityTokenHandler();
+		var jwtSecurityToken = tokenHandler.ReadJwtToken(accessToken);
 
-		if (accessToken == null || string.IsNullOrWhiteSpace(accessToken))
+		if (jwtSecurityToken.ValidTo < DateTime.Now)
 		{
 			var refreshToken = await context.GetTokenAsync("refresh_token");
 			await RefreshToken(refreshToken);
 			accessToken = await context.GetTokenAsync("access_token");
 		}
+
 		return accessToken;
 	}
 

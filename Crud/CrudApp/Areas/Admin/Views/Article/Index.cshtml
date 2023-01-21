@@ -4,3 +4,24 @@
     AdminHeaderModel headerModel = new("Articles", new(){new("/Admin/Article/Create",SD.CreateNew + "Article")});
 }
 <partial name="_AdminHeaderPartial" model="@headerModel">
+    <div class="admin_list">
+    <div class="admin_list_header">
+        <a href="#">Title</a>
+        <a href="#">Author</a>
+        <a href="#">Created</a>
+        <a href="#">Category</a>
+    </div>
+    @{
+        foreach(var item in Model.Articles){
+            <div class="admin_list_tile">
+                <div class="admin_list_tile_properties">
+                    <div class="admin_list_item">@item.Header</div>
+                    <div class="admin_list_item">@item.Member?.Username</div>
+                    <div class="admin_list_item">@item.Created.ToString("dd.MM.yyyy")</div>
+                    <div class="admin_list_item">@item.Category.Name</div>
+                </div>
+                <partial name="_AdminListActionsPartial" model='@(new Tuple<int,string>(item.Id,"Article"))'/>
+            </div>
+        }
+    }
+</div>

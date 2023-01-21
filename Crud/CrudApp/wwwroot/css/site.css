@@ -154,7 +154,7 @@ nav div {
 	padding-left: 2rem;
 	text-transform: uppercase;
 }
-._btn {
+._btn, .admin_list_actions a{
 	background-color: #233645;
 	color: #fff;
 	padding: .75rem 1rem;
@@ -258,7 +258,7 @@ h2{
 	padding: 2rem;
 	grid-gap: 2rem;
 }
-.media-library-img{
+.media-library-img, .admin_image_grid_tile img{
 	max-height: 200px;
 	object-fit: contain;
 	object-position: center;
@@ -268,4 +268,31 @@ h2{
 }
 .selected, .selectedThumbnail{
 	border: 5px solid #007fff;
+}
+.admin_list_header{
+	background-color: #303030;
+	height: 70px;
+}
+.admin_list_tile{
+	height: 70px;
+	background-color: #fff;
+	color: #303030;
+	display: grid;
+	grid-template-columns: 1fr max-content;
+	border-bottom: 1px solid #ccc;
+}
+.admin_list_tile_properties, .admin_list_header{
+	display: grid;
+	grid-template-columns: 500px repeat(auto-fill, 200px);
+	align-items: center;
+	padding-left: 2rem;
+}
+.admin_list_actions{
+	display: grid;
+	grid-template-columns: repeat(2, max-content);
+	grid-gap: 1rem;
+	grid-auto-rows: max-content;
+	align-content: center;
+	height: 100%;
+	padding-right: 2rem;
 }

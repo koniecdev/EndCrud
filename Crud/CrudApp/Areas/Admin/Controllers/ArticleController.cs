@@ -30,13 +30,8 @@ public class ArticleController : Controller
 
 	public async Task<ActionResult<GetCategoriesVm>> Create()
 	{
-		var accessToken = await HttpContext.GetTokenAsync("access_token");
-		if (accessToken == null || string.IsNullOrWhiteSpace(accessToken))
-		{
-			return Unauthorized();
-		}
-		ViewBag.access_token = accessToken;
-		var response = await _client.GetArticleCategories(accessToken);
+		ViewBag.access_token = await HttpContext.GetTokenAsync("access_token");
+		var response = await _client.GetArticleCategories();
 		return View(model: response);
 	}
 
@@ -44,11 +39,6 @@ public class ArticleController : Controller
 	[ValidateAntiForgeryToken]
 	public async Task<ActionResult> Create(GetCategoriesVm vm)
 	{
-		var accessToken = await HttpContext.GetTokenAsync("access_token");
-		if (accessToken == null || string.IsNullOrWhiteSpace(accessToken))
-		{
-			return Unauthorized();
-		}
 		var command = _mapper.Map<CreateArticleCommand>(vm.Article);
 		if(command == null)
 		{
@@ -61,7 +51,7 @@ public class ArticleController : Controller
 			command.Gallery.Add(Convert.ToInt32(picId));
 		}
 		command.UserId = _user.Id;
-		int response = await _client.CreateArticle(command, accessToken);
+		int response = await _client.CreateArticle(command);
 		if (!(response > 0))
 		{
 			return BadRequest();
@@ -71,12 +61,7 @@ public class ArticleController : Controller
 
 	public async Task<ActionResult> Update(int id)
 	{
-		var accessToken = await HttpContext.GetTokenAsync("access_token");
-		if (accessToken == null || string.IsNullOrWhiteSpace(accessToken))
-		{
-			return Unauthorized();
-		}
-		var response = await _client.GetArticle(id, accessToken);
+		var response = await _client.GetArticle(id);
 		return View(model: response);
 	}
 
@@ -84,22 +69,12 @@ public class ArticleController : Controller
 	[ValidateAntiForgeryToken]
 	public async Task<ActionResult> Update(GetArticleVm command)
 	{
-		var accessToken = await HttpContext.GetTokenAsync("access_token");
-		if (accessToken == null || string.IsNullOrWhiteSpace(accessToken))
-		{
-			return Unauthorized();
-		}
-		await _client.UpdateArticle(_mapper.Map<UpdateArticleCommand>(command.Article), accessToken);
+		await _client.UpdateArticle(_mapper.Map<UpdateArticleCommand>(command.Article));
 		return RedirectToAction(nameof(Index));
 	}
 	public async Task<ActionResult> Delete(int id)
 	{
-		var accessToken = await HttpContext.GetTokenAsync("access_token");
-		if (accessToken == null || string.IsNullOrWhiteSpace(accessToken))
-		{
-			return Unauthorized();
-		}
-		var response = await _client.GetArticle(id, accessToken);
+		var response = await _client.GetArticle(id);
 		return View(model: response);
 	}
 
@@ -107,12 +82,7 @@ public class ArticleController : Controller
 	[ValidateAntiForgeryToken]
 	public async Task<ActionResult> Delete(GetArticleVm command)
 	{
-		var accessToken = await HttpContext.GetTokenAsync("access_token");
-		if (accessToken == null || string.IsNullOrWhiteSpace(accessToken))
-		{
-			return Unauthorized();
-		}
-		await _client.DeleteArticle(command.Article.Id, accessToken);
+		await _client.DeleteArticle(command.Article.Id);
 		return RedirectToAction(nameof(Index));
 	}
 }

@@ -7,7 +7,7 @@
 <partial name="_AdminHeaderPartial" model="@headerModel">
 @{
     var preUrl = SD.APIUri;
-    <div class="admin_image_grid">
+    <div class="_library_content" style="height: auto; overflow-y: unset">
         @foreach(var picture in Model.Pictures)
         {
             <div class="admin_image_grid_tile">

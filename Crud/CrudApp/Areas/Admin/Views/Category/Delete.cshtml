@@ -3,13 +3,14 @@
 @{
     AdminHeaderModel headerModel = new("Delete existing category", new(){new("/Admin/Category",SD.GoBackTo + "Categories")});
 }
-<partial name="_AdminHeaderPartial" model="@headerModel">
-<form method="post" class="iform">
-    <div class="form_left">
-        <input type="text" disabled="" asp-for="@Model.Category.Name">
-    </div>
-    <div class="form_right">
-        <input type="submit" value="Delete">
-        <input type="hidden" asp-for="@Model.Category.Id">
-    </div>
-</form>
+<partial name="_AdminHeaderPartial" model="@headerModel"/>
+<main>
+    <form method="post" class="adminForm">
+        <div class="form_left">
+            <input type="text" disabled placeholder="Name" asp-for="@Model.Category.Name">
+        </div>
+        <div class="form_right">
+            <input type="submit" class="_btn" value="Submit">
+        </div>
+    </form>
+</main>

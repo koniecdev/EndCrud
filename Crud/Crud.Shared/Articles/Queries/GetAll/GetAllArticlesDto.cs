@@ -6,8 +6,10 @@ public class GetAllArticlesDto : IMapFrom<Article>
 		Header = string.Empty;
 		Content = string.Empty;
 	}
+	public int Id { get; set; }
 	public string Header { get; set; }
 	public string Content { get; set; }
+	public DateTime Created { get; set; }
 	public int MemberId { get; set; }
 	public virtual GetAllArticleMemberDto? Member { get; set; }
 	public int CategoryId { get; set; }
