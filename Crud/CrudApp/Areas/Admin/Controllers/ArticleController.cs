@@ -25,13 +25,17 @@ public class ArticleController : Controller
 	public async Task<ActionResult<GetAllArticlesVm>> Index()
 	{
 		var accessToken = await HttpContext.GetTokenAsync("access_token");
+
 		if (accessToken == null || string.IsNullOrWhiteSpace(accessToken))
 		{
-			return Unauthorized();
+			var refreshToken = await HttpContext.GetTokenAsync("refresh_token");
+			await _client.RefreshToken(refreshToken);
+			accessToken = await HttpContext.GetTokenAsync("access_token");
 		}
+
 		var response = await _client.GetAllArticles(accessToken);
 		return View(model: response);
-	}
+	} 
 
 	public async Task<ActionResult<GetCategoriesVm>> Create()
 	{

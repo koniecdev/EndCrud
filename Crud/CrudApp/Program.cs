@@ -19,7 +19,7 @@ builder.Services.AddAuthentication(options =>
 })
     .AddCookie("Cookies", options =>
 	{
-        options.ExpireTimeSpan = TimeSpan.FromDays(1);
+        options.ExpireTimeSpan = TimeSpan.FromHours(1);
 	})
     .AddOpenIdConnect("oidc", options =>
     {
@@ -43,6 +43,12 @@ builder.Services.AddHttpClient("CrudClient", options =>
 	options.BaseAddress = new Uri("https://localhost:7137");
 	options.Timeout = new TimeSpan(0, 0, 10000);
 	options.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+}).ConfigurePrimaryHttpMessageHandler(sp => new HttpClientHandler());
+builder.Services.AddHttpClient("IS4Client", options =>
+{
+    options.BaseAddress = new Uri("https://localhost:5001");
+    options.Timeout = new TimeSpan(0, 0, 10000);
+    options.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 }).ConfigurePrimaryHttpMessageHandler(sp => new HttpClientHandler());
 
 builder.Services.AddScoped(typeof(ICurrentUserService), typeof(CurrentUserService));

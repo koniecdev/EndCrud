@@ -4,18 +4,24 @@
     AdminHeaderModel headerModel = new("Create new article", new(){new("/Admin/Article",SD.GoBackTo + "Articles")});
 }
 <partial name="_AdminHeaderPartial" model="@headerModel">
-<form method="post">
-    <input type="text" asp-for="@Model.Article.Header">
-    <select asp-for="@Model.Article.CategoryId" asp-items="@Model.Categories.ToSelectListItem(1)"></select>
-    @Html.TextAreaFor(m => m.Article.Content)
-    <input type="hidden" asp-for="@Model.Article.ThumbnailId">
-    <input type="hidden" name="galleryPics" id="galleryPics">
-    <input type="submit">
-</form>
-<button class="LibraryThumbnailSelect">Select thumbnail</button>
-<button class="LibraryGallerySelect">Add pictures to gallery</button>
-<partial name="_AdminLibraryPartial" model="@(new AdminLibraryModel(0))">
-<partial name="_AdminLibraryPartial" model="@(new AdminLibraryModel(1))">
+<main>
+    <form method="post" class="adminForm">
+        <div class="form_left">
+            <input type="text" required placeholder="Title" asp-for="@Model.Article.Header">
+            @Html.TextAreaFor(m => m.Article.Content)
+        </div>
+        <div class="form_right">
+            <select asp-for="@Model.Article.CategoryId" asp-items="@Model.Categories.ToSelectListItem(1)"></select>
+            <input type="hidden" asp-for="@Model.Article.ThumbnailId">
+            <input type="hidden" name="galleryPics" id="galleryPics">
+            <button class="LibraryThumbnailSelect libraryBtn">Select thumbnail</button>
+            <button class="LibraryGallerySelect libraryBtn">Add pictures to gallery</button>
+            <input type="submit" class="_btn" value="Submit">
+        </div>
+    </form>
+    <partial name="_AdminLibraryPartial" model="@(new AdminLibraryModel(0))">
+    <partial name="_AdminLibraryPartial" model="@(new AdminLibraryModel(1))">
+</main>
 @section Scripts{
     <script>
     $(document).ready(function(){

@@ -19,8 +19,8 @@
             var pictures = response.pictures;
             $.each(pictures, function (index, picture) {
                 var img = $('<img>').attr('src', basePath + picture.relativePath.replace(/\\/g, "%2F")).addClass("media-library-img").attr("data-id", picture.id);
-                img.appendTo('.thumbnailLibrary');
-                img.clone().appendTo('.galleryLibrary');
+                img.appendTo('.thumbnailLibrary ._library_content');
+                img.clone().appendTo('.galleryLibrary ._library_content');
             });
         },
         error: function (error) {
@@ -90,5 +90,17 @@
         this.submit();
     });
 
+    $(".libraryBtn").on("click", function(e){
+        e.preventDefault();
+        if($(this).hasClass("LibraryThumbnailSelect")){
+            $(".thumbnailLibrary").toggleClass("hidden");
+        }
+        else if($(this).hasClass("LibraryGallerySelect")){
+            $(".galleryLibrary").toggleClass("hidden");
+        }
+    });
 
+    $("._library_close").on("click", function(){
+        $(this).closest(".pictureLibrary").addClass("hidden");
+    });
 });

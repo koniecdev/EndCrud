@@ -10,6 +10,8 @@ namespace CrudApp;
 
 public interface ICrudClient
 {
+    Task RefreshToken(string refreshToken);
+
     Task<GetAllPicturesVm> GetAllPictures(string accessToken);
     Task CreatePictures(CreatePicturesCommand command, string accessToken);
     Task DeletePicture(int id, string accessToken);

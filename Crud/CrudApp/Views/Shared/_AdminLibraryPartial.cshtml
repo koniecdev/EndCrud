@@ -2,16 +2,27 @@
 
 @{
     string className = string.Empty;
+    string title = string.Empty;
     switch (Model.ChosenType)
     {
         case 0:
             className = "thumbnailLibrary";
+            title = "Choose Article Thumbnail";
             break;
         case 1:
             className = "galleryLibrary";
+            title = "Manage Article Gallery";
             break;
     }
 }
-<div class="@className">
-    
+<div class="@className pictureLibrary hidden">
+    <div class="_library_container">
+        <div class="_library_header">
+            <h2>@title</h2>
+            <div class="_library_close">X</div>
+        </div>
+        <div class="_library_content">
+            
+        </div>
+    </div>
 </div>
