@@ -4,3 +4,22 @@
     AdminHeaderModel headerModel = new("Members", new());
 }
 <partial name="_AdminHeaderPartial" model="@headerModel">
+    <div class="admin_list">
+    <div class="admin_list_header">
+        <a href="#">UserId</a>
+        <a href="#">Username</a>
+        <a href="#">Email</a>
+    </div>
+    @{
+        foreach(var item in Model.Members){
+            <div class="admin_list_tile">
+                <div class="admin_list_tile_properties">
+                    <div class="admin_list_item">@item.UserId</div>
+                    <div class="admin_list_item">@item.Username</div>
+                    <div class="admin_list_item">@item.Email</div>
+                </div>
+                <partial name="_AdminListActionsPartial" model='@(new Tuple<int,string>(item.Id,"Members"))'/>
+            </div>
+        }
+    }
+</div>

@@ -59,17 +59,25 @@ public class ArticleController : Controller
 		return RedirectToAction(nameof(Index));
 	}
 
-	public async Task<ActionResult> Update(int id)
+	public async Task<ActionResult<GetArticleCategoriesVm>> Update(int id)
 	{
-		var response = await _client.GetArticle(id);
+		ViewBag.access_token = await HttpContext.GetTokenAsync("access_token");
+		var response = await _client.GetArticleCategories(id);
 		return View(model: response);
 	}
 
 	[HttpPost, ActionName("Update")]
 	[ValidateAntiForgeryToken]
-	public async Task<ActionResult> Update(GetArticleVm command)
+	public async Task<ActionResult> Update(GetArticleCategoriesVm vm)
 	{
-		await _client.UpdateArticle(_mapper.Map<UpdateArticleCommand>(command.Article));
+		var mapped = _mapper.Map<UpdateArticleCommand>(vm.Article);
+		vm.Article.GalleryString = Request.Form["galleryPics"];
+		var pics = vm.Article.GalleryString.Split(',');
+		foreach(var pic in pics)
+		{
+			mapped.Gallery.Add(int.Parse(pic));
+		}
+		await _client.UpdateArticle(mapped);
 		return RedirectToAction(nameof(Index));
 	}
 	public async Task<ActionResult> Delete(int id)

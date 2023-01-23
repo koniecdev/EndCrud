@@ -296,3 +296,11 @@ h2{
 	height: 100%;
 	padding-right: 2rem;
 }
+.admin_image_grid_tile{
+	justify-self: center;
+}
+.admin_image_grid_tile a{
+	color: #ff0000;
+	display: block;
+	text-align: center;
+}

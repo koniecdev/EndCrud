@@ -12,12 +12,25 @@ public class UpdateArticleCommandHandler : IRequestHandler<UpdateArticleCommand,
 	}
 	public async Task<Unit> Handle(UpdateArticleCommand request, CancellationToken cancellationToken)
 	{
-		var fromDb = await _db.Articles.SingleOrDefaultAsync(m => m.Id == request.Id && m.StatusId != 0, cancellationToken);
+		var fromDb = await _db.Articles.Include(m=>m.Thumbnail).Include(m=>m.Pictures)
+			.SingleOrDefaultAsync(m => m.Id == request.Id && m.StatusId != 0, cancellationToken);
 		if(fromDb == null)
 		{
 			throw new ArgumentException("id: " + request.Id.ToString());
 		}
 		_mapper.Map(request, fromDb);
+		if (request.Gallery.Count > 0)
+		{
+			fromDb.Pictures = new List<Picture>();
+			foreach (var id in request.Gallery)
+			{
+				var photo = await _db.Pictures.FirstOrDefaultAsync(m => m.Id == id, cancellationToken);
+				if (photo != null)
+				{
+					fromDb.Pictures.Add(photo);
+				}
+			}
+		}
 		await _db.SaveChangesAsync(cancellationToken);
 		return Unit.Value;
 	}

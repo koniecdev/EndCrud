@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Crud.Shared.Members.Queries;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CrudApp.Admin.Controllers;
 
@@ -10,9 +11,10 @@ public class MemberController : Controller
 	{
 		_client = client;
 	}
-	public IActionResult Index()
+	public async Task<ActionResult<GetAllMembersVm>> Index()
 	{
-		return View();
+		var response = await _client.GetAllMembers();
+		return View(model: response);
 	}
 
 }

@@ -41,6 +41,20 @@ public class ArticleController : BaseController
 		}
 		return Ok(response);
 	}
+	[HttpGet("categories/{id}")]
+	public async Task<ActionResult<GetAllArticlesVm>> GetCategories(int id)
+	{
+		if (!(id > 0 && id < int.MaxValue))
+		{
+			return BadRequest();
+		}
+		var response = await Mediator.Send(new GetArticleCategoriesQuery(id));
+		if (response == null)
+		{
+			return NotFound();
+		}
+		return Ok(response);
+	}
 	[HttpPost]
 	public async Task<ActionResult<int>> Article(CreateArticleCommand command)
 	{

@@ -1,10 +1,37 @@
-﻿@model Crud.Shared.Articles.Queries.GetArticleVm
+﻿@model Crud.Shared.Articles.Queries.GetArticleCategoriesVm
 
 @{
-    AdminHeaderModel headerModel = new("Articles", new(){new("/Admin/Article",SD.GoBackTo + "Articles")});
+    AdminHeaderModel headerModel = new("Update article", new(){new("/Admin/Article",SD.GoBackTo + "Articles")});
 }
 <partial name="_AdminHeaderPartial" model="@headerModel">
-@Html.TextAreaFor(m => m.Article.Content)
+<main>
+    <form method="post" class="adminForm">
+        <div class="form_left">
+            <input type="text" required placeholder="Title" asp-for="@Model.Article.Header">
+            @Html.TextAreaFor(m => m.Article.Content)
+        </div>
+        <div class="form_right">
+            <select asp-for="@Model.Article.CategoryId" asp-items="@Model.Categories.ToSelectListItem(Model.Article.CategoryId)"></select>
+            <input type="hidden" asp-for="@Model.Article.Id">
+            <input type="hidden" asp-for="@Model.Article.ThumbnailId">
+            <input type="hidden" name="galleryPics" id="galleryPics" value="@Model.Article.GalleryString">
+            <button class="LibraryThumbnailSelect libraryBtn">Select thumbnail</button>
+            <button class="LibraryGallerySelect libraryBtn">Add pictures to gallery</button>
+            <input type="submit" class="_btn" value="Submit">
+        </div>
+    </form>
+    <partial name="_AdminLibraryPartial" model="@(new AdminLibraryModel(0))">
+    <partial name="_AdminLibraryPartial" model="@(new AdminLibraryModel(1))">
+</main>
 @section Scripts{
+    <script>
+    $(document).ready(function(){
+        // Set the cookie
+        var expire = new Date();
+        expire.setTime(expire.getTime() + (1 * 24 * 60 * 60 * 1000)); // expires in one day
+        document.cookie = "access_token=@ViewBag.access_token; expires=" + expire.toUTCString() + "; path=/";
+    });
+    </script>
     <script src="~/js/tinymce.js"></script>
+    <script src="~/js/library.js"></script>
 }

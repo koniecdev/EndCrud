@@ -51,7 +51,9 @@ public static class CrudDbContextFactory
 			Header = "Szok i niedowierzanie! VAT 23% na paliwo wraca!",
 			Content = "Lorem ipsum dolor sit amet is simple dummy text to fill the blank article.",
 			MemberId = 1,
-			CategoryId = 1
+			CategoryId = 1,
+			ThumbnailId = 1,
+			Pictures = new List<Picture>() { picture1, picture2 }
 		};
 		context.Articles.Add(article1);
 		var article2 = new Article()
@@ -61,7 +63,9 @@ public static class CrudDbContextFactory
 			Header = "#2 Szok i niedowierzanie! VAT 23% na paliwo wraca!",
 			Content = "#2 Lorem ipsum dolor sit amet is simple dummy text to fill the blank article.",
 			MemberId = 1,
-			CategoryId = 2
+			CategoryId = 2,
+			ThumbnailId = 1,
+			Pictures = new List<Picture>() { picture1, picture2 }
 		};
 		context.Articles.Add(article2);
 

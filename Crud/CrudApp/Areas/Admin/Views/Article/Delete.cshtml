@@ -4,3 +4,13 @@
     AdminHeaderModel headerModel = new("Delete existing article", new(){new("/Admin/Article",SD.GoBackTo + "Articles")});
 }
 <partial name="_AdminHeaderPartial" model="@headerModel">
+<main>
+    <form method="post" class="adminForm">
+        <div class="form_left">
+            <input type="text" disabled placeholder="Name" asp-for="@Model.Article.Header">
+        </div>
+        <div class="form_right">
+            <input type="submit" class="_btn" value="Submit">
+        </div>
+    </form>
+</main>

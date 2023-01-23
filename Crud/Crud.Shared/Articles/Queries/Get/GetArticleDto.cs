@@ -20,7 +20,7 @@ public class GetArticleDto : IMapFrom<Article>
 	public int CategoryId { get; set; }
 	public virtual GetArticleCategoryDto? Category { get; set; }
 	public virtual GetArticlePictureDto? Thumbnail { get; set; }
-	public virtual GetArticlePicturesDto? Pictures { get; set; }
+	public virtual ICollection<GetArticlePicturesDto>? Pictures { get; set; }
 	public void Mapping(Profile profile)
 	{
 		profile.CreateMap<Article, GetArticleDto>()

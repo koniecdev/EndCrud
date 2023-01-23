@@ -23,6 +23,7 @@ public interface ICrudClient
     Task<GetAllArticlesVm> GetAllArticles();
     Task<GetArticleVm> GetArticle(int id);
     Task<GetCategoriesVm> GetArticleCategories();
+    Task<GetArticleCategoriesVm> GetArticleCategories(int id);
     Task<int> CreateArticle(CreateArticleCommand command);
     Task UpdateArticle(UpdateArticleCommand command);
     Task DeleteArticle(int id);

@@ -279,6 +279,13 @@ public partial class CrudClient : ICrudClient
 		return await GetTask<GetCategoriesVm>(urlBuilder);
 	}
 
+	public async Task<GetArticleCategoriesVm> GetArticleCategories(int id)
+	{
+		var urlBuilder = new StringBuilder();
+		urlBuilder.Append(BaseUrl).Append("articles/categories").Append($"/{id}");
+		return await GetTask<GetArticleCategoriesVm>(urlBuilder);
+	}
+
 	public async Task<GetArticleVm> GetArticle(int id)
 	{
 		var urlBuilder = new StringBuilder();

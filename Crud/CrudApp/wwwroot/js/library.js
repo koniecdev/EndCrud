@@ -22,6 +22,23 @@
                 img.appendTo('.thumbnailLibrary ._library_content');
                 img.clone().appendTo('.galleryLibrary ._library_content');
             });
+            var thumb = $("#Article_ThumbnailId").val();
+            if (!(!thumb || thumb.length === 0)) {
+                $(".thumbnailLibrary .media-library-img[data-id='" + thumb + "']").addClass("selectedThumbnail");
+                var parentalThumb = $(".selectedThumbnail").parent();
+                $('.thumbnailLibrary .selectedThumbnail').appendTo(parentalThumb);
+                $('.thumbnailLibrary .media-library-img:not(.selectedThumbnail)').appendTo(parentalThumb);
+			}
+            var toSelect = $("#galleryPics").val();
+            if (!(!toSelect || toSelect.length === 0)) {
+                let toSelectArr = toSelect.split(',');
+                $(toSelectArr).each(function (index, element) {
+                    $(".galleryLibrary .media-library-img[data-id='" + element + "']").addClass("selected");
+                });
+                var parental = $(".selected").parent();
+                $('.galleryLibrary .selected').appendTo(parental);
+                $('.galleryLibrary .media-library-img:not(.selected)').appendTo(parental);
+            }
         },
         error: function (error) {
             console.log(error);
